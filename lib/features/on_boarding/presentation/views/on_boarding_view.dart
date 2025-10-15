@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pet_finder_app_task/core/theme/app_text_styles.dart';
 import 'package:pet_finder_app_task/core/utils/assets.dart';
+import 'package:pet_finder_app_task/features/home/presentation/views/main_home_view.dart';
 import 'package:pet_finder_app_task/features/on_boarding/presentation/widgets/custom_container_button.dart';
 
 class OnBoardingView extends StatelessWidget {
@@ -33,7 +35,11 @@ class OnBoardingView extends StatelessWidget {
                 ),
                 SizedBox(height: 20.h),
                 CustomContainerButton(
-                  onTap: () {},
+                  onTap: () {
+                    GoRouter.of(
+                      context,
+                    ).pushReplacement(MainHomeView.routeName);
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     spacing: 5.w,
