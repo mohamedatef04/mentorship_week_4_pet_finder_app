@@ -2,19 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pet_finder_app_task/core/constants/api_constants.dart';
 import 'package:pet_finder_app_task/core/theme/app_colors.dart';
 import 'package:pet_finder_app_task/core/theme/app_text_styles.dart';
 import 'package:pet_finder_app_task/core/utils/assets.dart';
+import 'package:pet_finder_app_task/features/home/domain/entities/pet_entity.dart';
 import 'package:pet_finder_app_task/features/home/presentation/views/pet_details_view.dart';
 
 class PetItem extends StatelessWidget {
-  const PetItem({super.key});
+  const PetItem({super.key, required this.petEntity});
+  final PetEntity petEntity;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        GoRouter.of(context).push(PetDetailsView.routeName);
+        GoRouter.of(context).push(PetDetailsView.routeName, extra: petEntity);
       },
       child: Card(
         color: AppColors.whiteColor,
@@ -40,8 +43,10 @@ class PetItem extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15.r),
                       color: AppColors.lightGreyColor,
-                      image: const DecorationImage(
-                        image: AssetImage(Assets.imagesPet),
+                      image: DecorationImage(
+                        image: NetworkImage(
+                          '${ApiConstants.baseImageUrl}${petEntity.petImageUrl}.jpg',
+                        ),
                         fit: BoxFit.fill,
                       ),
                     ),
@@ -54,23 +59,26 @@ class PetItem extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          Text(
-                            'Tom',
-                            style: AppTextStyles.black18,
-                          ),
-                          const Spacer(),
+                          Expanded(
+                            flex: 6,
+                            child: Text(
+                              petEntity.petName,
 
-                          SvgPicture.asset(Assets.imagesHeart),
+                              style: AppTextStyles.black18,
+                            ),
+                          ),
+
+                          Expanded(child: SvgPicture.asset(Assets.imagesHeart)),
                         ],
                       ),
                       Text(
-                        'Male',
+                        petEntity.petOrigin,
                         style: AppTextStyles.darkGrey16.copyWith(
                           fontSize: 14.sp,
                         ),
                       ),
                       Text(
-                        '1 year Old',
+                        '${petEntity.petLifeSpan} Life Span',
                         style: AppTextStyles.darkGrey16.copyWith(
                           fontSize: 14.sp,
                         ),

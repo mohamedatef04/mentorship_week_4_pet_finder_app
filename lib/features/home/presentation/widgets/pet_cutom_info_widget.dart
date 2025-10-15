@@ -4,7 +4,13 @@ import 'package:pet_finder_app_task/core/theme/app_colors.dart';
 import 'package:pet_finder_app_task/core/theme/app_text_styles.dart';
 
 class PetCutomInfoWidget extends StatelessWidget {
-  const PetCutomInfoWidget({super.key});
+  const PetCutomInfoWidget({
+    super.key,
+    required this.title,
+    required this.value,
+  });
+  final String title;
+  final String value;
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +27,8 @@ class PetCutomInfoWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           spacing: 5.h,
           children: [
-            Text('Gender', style: AppTextStyles.black18),
-            Text('Male', style: AppTextStyles.darkGrey16),
+            Text(title, style: AppTextStyles.black18),
+            Text(value, style: AppTextStyles.darkGrey16),
           ],
         ),
       ),
