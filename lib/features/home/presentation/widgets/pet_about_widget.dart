@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_finder_app_task/core/theme/app_text_styles.dart';
+import 'package:pet_finder_app_task/features/home/domain/entities/pet_entity.dart';
 
 class PetAboutWidget extends StatelessWidget {
-  const PetAboutWidget({super.key});
+  const PetAboutWidget({super.key, required this.petEntity});
+  final PetEntity petEntity;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,7 @@ class PetAboutWidget extends StatelessWidget {
           style: AppTextStyles.black24.copyWith(fontSize: 22.sp),
         ),
         Text(
-          'Tom is a playful and loyal Golden Retriever who loves being around people. He’s 1 years old, full of energy, and always ready for a game of fetch.',
+          petEntity.petDescription,
           style: AppTextStyles.darkGrey16,
           textAlign: TextAlign.justify,
         ),
