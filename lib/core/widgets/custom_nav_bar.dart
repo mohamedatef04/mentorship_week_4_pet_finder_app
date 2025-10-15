@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:pet_finder_app_task/core/theme/app_colors.dart';
 import 'package:pet_finder_app_task/core/utils/assets.dart';
+import 'package:pet_finder_app_task/features/home/presentation/cubits/nav_bar/nav_bar_cubit.dart';
 
 class CustomNavBar extends StatefulWidget {
   const CustomNavBar({super.key});
@@ -32,6 +34,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
         setState(() {
           selectedIndex = value;
         });
+        context.read<NavBarCubit>().changeIndex(value);
       },
       tabs: [
         GButton(
@@ -79,5 +82,3 @@ class _CustomNavBarState extends State<CustomNavBar> {
     );
   }
 }
-
-class NavBarCubit {}
