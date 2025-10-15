@@ -4,7 +4,7 @@ import 'package:pet_finder_app_task/core/routing/app_routes.dart';
 import 'package:pet_finder_app_task/core/theme/app_colors.dart';
 
 void main() {
-  runApp(const ScreenUtilInit());
+  runApp(const PetFinderApp());
 }
 
 class PetFinderApp extends StatelessWidget {
