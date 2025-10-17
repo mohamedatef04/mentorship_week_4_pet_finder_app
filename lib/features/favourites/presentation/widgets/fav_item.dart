@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:pet_finder_app_task/core/theme/app_colors.dart';
-import 'package:pet_finder_app_task/core/theme/app_text_styles.dart';
-import 'package:pet_finder_app_task/core/utils/assets.dart';
+import 'package:pet_finder_app_task/features/favourites/data/models/fav_item_model.dart';
+import 'package:pet_finder_app_task/features/favourites/presentation/cubits/remove_from_favs/remove_from_favs_cubit.dart';
 
 class FavItem extends StatelessWidget {
-  const FavItem({super.key});
+  const FavItem({super.key, required this.favItemModel});
+  final FavItemModel favItemModel;
 
   @override
   Widget build(BuildContext context) {
@@ -20,49 +21,47 @@ class FavItem extends StatelessWidget {
           color: AppColors.whiteColor,
           borderRadius: BorderRadius.all(Radius.circular(10.r)),
         ),
-        child: Padding(
-          padding: EdgeInsets.all(8.w),
-          child: Column(
-            spacing: 5.h,
-            children: [
-              Container(
+        child: Column(
+          children: [
+            Expanded(
+              flex: 6,
+              child: Container(
                 width: 151.w,
                 height: 140.h,
                 decoration: BoxDecoration(
-                  color: AppColors.secondaryColor,
                   borderRadius: BorderRadius.all(
                     Radius.circular(15.r),
                   ),
-                  image: const DecorationImage(
-                    image: AssetImage(Assets.imagesPet),
+                  image: DecorationImage(
+                    image: NetworkImage(favItemModel.image.url),
                     fit: BoxFit.fill,
                   ),
                 ),
               ),
-              Row(
-                children: [
-                  Text(
-                    'Tom',
-                    style: AppTextStyles.black18.copyWith(fontSize: 14.sp),
+            ),
+            Expanded(
+              flex: 2,
+              child: Container(
+                width: 50.w,
+                height: 50.h,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.lightGreyColor,
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    context.read<RemoveFromFavsCubit>().removeFromFav(
+                      petId: favItemModel.id.toString(),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.delete,
+                    color: AppColors.primaryColor,
                   ),
-                  const Spacer(),
-                  SvgPicture.asset(Assets.imagesHeart),
-                ],
+                ),
               ),
-              Row(
-                spacing: 5.w,
-                children: [
-                  SvgPicture.asset(Assets.imagesLocation),
-                  Text(
-                    '2.7 km away',
-                    style: AppTextStyles.darkGrey16.copyWith(
-                      fontSize: 14.sp,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
