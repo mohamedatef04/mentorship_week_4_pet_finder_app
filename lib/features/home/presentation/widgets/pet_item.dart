@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +7,7 @@ import 'package:pet_finder_app_task/core/constants/api_constants.dart';
 import 'package:pet_finder_app_task/core/theme/app_colors.dart';
 import 'package:pet_finder_app_task/core/theme/app_text_styles.dart';
 import 'package:pet_finder_app_task/core/utils/assets.dart';
+import 'package:pet_finder_app_task/features/favourites/presentation/cubits/add_pet_to_fav_cubit/add_pet_to_fav_cubit_cubit.dart';
 import 'package:pet_finder_app_task/features/home/domain/entities/pet_entity.dart';
 import 'package:pet_finder_app_task/features/home/presentation/views/pet_details_view.dart';
 
@@ -68,7 +70,16 @@ class PetItem extends StatelessWidget {
                             ),
                           ),
 
-                          Expanded(child: SvgPicture.asset(Assets.imagesHeart)),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                context
+                                    .read<AddPetToFavCubitCubit>()
+                                    .addPetToFav(petId: petEntity.petImageUrl);
+                              },
+                              child: SvgPicture.asset(Assets.imagesHeart),
+                            ),
+                          ),
                         ],
                       ),
                       Text(
