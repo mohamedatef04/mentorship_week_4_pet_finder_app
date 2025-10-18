@@ -14,23 +14,28 @@ class ServerFailure extends Failures {
         return ServerFailure(
           errorMessage: "Connection timed out. Please try again.",
         );
+
       case DioExceptionType.sendTimeout:
         return ServerFailure(
           errorMessage: "Send request timed out. Please check your network.",
         );
+
       case DioExceptionType.receiveTimeout:
         return ServerFailure(
           errorMessage: "Receive timeout from server. Try again later.",
         );
+
       case DioExceptionType.badCertificate:
         return ServerFailure(
           errorMessage: "Bad SSL certificate. Cannot verify server identity.",
         );
+
       case DioExceptionType.badResponse:
-        return ServerFailure.fromResponse(
-          dioException.response?.statusCode,
-          dioException.response!.data,
-        );
+        final response = dioException.response;
+        final statusCode = response?.statusCode;
+        final data = response?.data;
+        return ServerFailure.fromResponse(statusCode, data);
+
       case DioExceptionType.cancel:
         return ServerFailure(errorMessage: "Request was cancelled.");
 
@@ -39,8 +44,10 @@ class ServerFailure extends Failures {
           errorMessage:
               "Connection error. Please check your internet connection.",
         );
+
       case DioExceptionType.unknown:
-        if (dioException.message!.contains('SocketException')) {
+        final message = dioException.message ?? '';
+        if (message.contains('SocketException')) {
           return ServerFailure(
             errorMessage:
                 "No internet connection. Please check your internet connection.",
@@ -54,7 +61,11 @@ class ServerFailure extends Failures {
 
   factory ServerFailure.fromResponse(int? statusCode, dynamic response) {
     if (statusCode == 400 || statusCode == 401 || statusCode == 403) {
-      return ServerFailure(errorMessage: response['message']);
+      return ServerFailure(
+        errorMessage:
+            response?['message'] ??
+            'Authorization error, please check your credentials.',
+      );
     } else if (statusCode == 404) {
       return ServerFailure(
         errorMessage: 'Your request was not found, please try again later.',
@@ -65,7 +76,8 @@ class ServerFailure extends Failures {
       );
     } else {
       return ServerFailure(
-        errorMessage: 'Opps something went wrong, please try again later',
+        errorMessage:
+            'Oops, something went wrong. Please try again later. (Code: $statusCode)',
       );
     }
   }
